@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @font-face {
+            font-family:'Font';
+            src: url(font/DTM-Sans.otf);
+        }
+#entradaSenha {
+    margin: 20px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+#medidorPoder {
+    margin-top: 10px;
+    height: 20px;
+    width: 0;
+    background-color: gray;
+    transition: width 0.3s, background-color 0.3s;
+}
+
+#requisitos {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.requisito {
+    margin-right: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.vermelho {
+    color: red;
+    transition: color 0.3s;
+}
+
+.branco{
+    color: white;
+    transition: color 0.3s;
+}
+
+#textoPoder {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#mostrarSenha {
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: white;
+  }
+  body{
+    background-color: #000000;
+    font-family: 'Font';
+  }
+  .logo-1{
+    display: flex;
+    justify-content: center;
+  }
+  .under{
+    width: 500px;
+  }
+  .personagem-2{
+     display: flex;
+     justify-content: end;
+     margin-top: -250px;
+  }
+  .puxar-requisitos, .medidor, .puxar-resto{
+    display: flex;
+    justify-content: center;
+  }
+  .video-vida,.video-vida-2{
+    width: 200px;
+  }
+  .vida-1, .vida-2{
+    display: flex;
+    margin-top: -200px;
+  }
+  .vida-2{
+    justify-content: end;
+  }
+  h1{
+    color: white;
+  }
+  .texto{
+    display: flex;
+    justify-content: center;
+  }
+    </style>
+</head>
+<body>
+
+    <div class="logo-1">
+        <img class="logo" src="img/header.jpg" alt="">
+    </div>
+    <div class="texto">
+    <h1>Monte Sua Senha </h1>
+</div>
+    <div class="puxar-resto">
+    <input type="password" id="entradaSenha" placeholder="Digite sua senha">
+    
+    <span id="mostrarSenha">Mostrar Senha</span>
+</div>
+<div class="medidor">
+    <div id="medidorPoder"></div>
+</div>
+<div class="video-fundo">
+   <div class="vida-1">
+    <video class="video-vida" autoplay loop muted src="videos/vida.mp4"></video>
+</div>
+<div class="vida-2">
+    <video class="video-vida-2" autoplay loop muted src="videos/vida.mp4"></video>
+</div>
+</div>
+    <div class="puxar-requisitos">
+    <div id="requisitos">
+        <div id="requisitoComprimento" class="requisito">Comprimento</div>
+        <div id="requisitoMinuscula" class="requisito">Letra minúscula</div>
+        <div id="requisitoMaiuscula" class="requisito">Letra maiúscula</div>
+        <div id="requisitoNumero" class="requisito">Número</div>
+        <div id="requisitoSimbolo" class="requisito">Símbolo</div>
+    </div>
+</div>
+
+    <div class="personagens">
+        <div class="personagem-1">
+            <img class="under" src="img/undertale-scaled-1280x720.jpg" alt="">
+        </div>
+        <div class="personagem-2">
+            <img class="under-2" src="img/line.gif" alt="">
+        </div>
+        
+    </div>
+    
+    
+
+    <script>
+       var entradaSenha = document.getElementById('entradaSenha');
+var medidorPoder = document.getElementById('medidorPoder');
+var requisitoComprimento = document.getElementById('requisitoComprimento');
+var requisitoMinuscula = document.getElementById('requisitoMinuscula');
+var requisitoMaiscula = document.getElementById('requisitoMaiscula');
+var requisitoNumero = document.getElementById('requisitoNumero');
+var requisitoSimbolo = document.getElementById('requisitoSimbolo');
+var textoPoder = document.getElementById('textoPoder');
+var mostrarSenha = document.getElementById('mostrarSenha');
+
+
+entradaSenha.addEventListener('input', function () {
+    var senha = entradaSenha.value;
+    var Poder = verificarPoder(senha);
+    
+    var cor = Poder < 50 ? 'red' : Poder < 80 ? 'yellow' : 'white';
+
+    medidorPoder.style.width = Poder + '%';
+    medidorPoder.style.backgroundColor = cor;
+
+    textoPoder.textContent = 'Força da Senha: ' + Poder + '%';
+
+    atualizar(senha);
+});
+
+mostrarSenha.addEventListener('click',function () {
+    entradaSenha.type = entradaSenha.type === 'password' ? 'text' : 'password'
+});
+
+function verificarPoder(senha) {
+    var comprimentoMinimo = 8;
+    var possuiMinuscula = /[a-z]/.test(senha);
+    var possuiMaiuscula = /[A-Z]/.test(senha);
+    var possuiNumeros = /\d/.test(senha);
+    var possuiSimbolo = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(senha);
+
+    var Poder = 0;
+
+    if (senha.length >= comprimentoMinimo) {
+        Poder += 25;
+        requisitoComprimento.classList.remove('vermelho');
+        requisitoComprimento.classList.add('branco');
+    } else {
+        requisitoComprimento.classList.remove('branco');
+        requisitoComprimento.classList.add('vermelho');
+    }
+
+    if (possuiMinuscula) {
+        Poder += 25;
+        requisitoMinuscula.classList.remove('vermelho');
+        requisitoMinuscula.classList.add('branco');
+    } else {
+        requisitoMinuscula.classList.remove('branco');
+        requisitoMinuscula.classList.add('vermelho');
+    } 
+
+    if (possuiMaiuscula) {
+        Poder += 25;
+        requisitoMaiuscula.classList.remove('vermelho');
+        requisitoMaiuscula.classList.add('branco');
+    } else {
+        requisitoMaiuscula.classList.remove('branco');
+        requisitoMaiuscula.classList.add('vermelho');
+    } 
+
+    if (possuiNumeros) {
+        Poder += 25;
+        requisitoNumero.classList.remove('vermelho');
+        requisitoNumero.classList.add('branco');
+    } else {
+        requisitoNumero.classList.remove('branco');
+        requisitoNumero.classList.add('vermelho');
+    } 
+
+    if (possuiSimbolo) {
+        Poder += 25;
+        requisitoSimbolo.classList.remove('vermelho');
+        requisitoSimbolo.classList.add('branco');
+    } else {
+        requisitoSimbolo.classList.remove('branco');
+        requisitoSimbolo.classList.add('vermelho');
+    } 
+
+    return Math.min(100, Poder);
+}
+
+function atualizar(senha) {
+    verificarPoder(senha);
+}
+
+    </script>
+</body>
+</html>
